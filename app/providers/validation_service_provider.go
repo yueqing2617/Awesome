@@ -1,6 +1,7 @@
 package providers
 
 import (
+	"Awesome/app/rules"
 	"github.com/goravel/framework/contracts/validation"
 	"github.com/goravel/framework/facades"
 )
@@ -19,5 +20,10 @@ func (receiver *ValidationServiceProvider) Boot() {
 }
 
 func (receiver *ValidationServiceProvider) rules() []validation.Rule {
-	return []validation.Rule{}
+	return []validation.Rule{
+		&rules.RegexRule{},
+		&rules.Captcha{},
+		&rules.MaxLength{},
+		&rules.Unique{},
+	}
 }

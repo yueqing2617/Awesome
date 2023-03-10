@@ -3,8 +3,8 @@ package providers
 import (
 	"github.com/goravel/framework/facades"
 
-	"agpc/app/grpc"
-	"agpc/routes"
+	"Awesome/app/grpc"
+	"Awesome/routes"
 )
 
 type GrpcServiceProvider struct {

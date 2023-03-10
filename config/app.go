@@ -18,7 +18,7 @@ import (
 	"github.com/goravel/framework/schedule"
 	"github.com/goravel/framework/validation"
 
-	"agpc/app/providers"
+	"Awesome/app/providers"
 )
 
 // Boot Start all init methods of the current folder to bootstrap all config.

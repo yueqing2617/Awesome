@@ -3,7 +3,7 @@ package providers
 import (
 	"github.com/goravel/framework/facades"
 
-	"agpc/app/console"
+	"Awesome/app/console"
 )
 
 type ConsoleServiceProvider struct {

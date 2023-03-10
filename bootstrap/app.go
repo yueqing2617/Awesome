@@ -3,7 +3,7 @@ package bootstrap
 import (
 	"github.com/goravel/framework/foundation"
 
-	"agpc/config"
+	"Awesome/config"
 )
 
 func Boot() {

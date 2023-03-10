@@ -3,8 +3,8 @@ package providers
 import (
 	"github.com/goravel/framework/facades"
 
-	"agpc/app/http"
-	"agpc/routes"
+	"Awesome/app/http"
+	"Awesome/routes"
 )
 
 type RouteServiceProvider struct {
@@ -19,4 +19,5 @@ func (receiver *RouteServiceProvider) Register() {
 func (receiver *RouteServiceProvider) Boot() {
 	//Add routes
 	routes.Web()
+	routes.Admin()
 }
