@@ -21,9 +21,12 @@ func (receiver *ValidationServiceProvider) Boot() {
 
 func (receiver *ValidationServiceProvider) rules() []validation.Rule {
 	return []validation.Rule{
-		&rules.RegexRule{},
+		&rules.Numeric{},
 		&rules.Captcha{},
 		&rules.MaxLength{},
+		&rules.RegexRule{},
 		&rules.Unique{},
+		&rules.Phone{},
+		&rules.NotExists{},
 	}
 }

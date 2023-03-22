@@ -18,7 +18,7 @@ func (receiver *Unique) Passes(data validation.Data, val any, options ...any) bo
 	table := options[0].(string)
 	field := options[1].(string)
 	if val == nil {
-		return true
+		return false
 	}
 	var count int64
 	err := facades.Orm.Query().Raw("SELECT COUNT(*) FROM "+table+" WHERE "+field+" = ?", val).Count(&count)

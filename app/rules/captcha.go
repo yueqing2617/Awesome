@@ -15,8 +15,8 @@ func (receiver *Captcha) Signature() string {
 
 // Passes Determine if the validation rule passes.
 func (receiver *Captcha) Passes(data validation.Data, val any, options ...any) bool {
-	id, _ := data.Get("app_code")
-	if id == nil || val == nil {
+	id, _ := data.Get("app_secret")
+	if id == nil || id.(string) == "" || val.(string) == "" {
 		return false
 	}
 	return helper.VerifyCaptcha(id.(string), val.(string))
@@ -24,5 +24,5 @@ func (receiver *Captcha) Passes(data validation.Data, val any, options ...any) b
 
 // Message Get the validation error message.
 func (receiver *Captcha) Message() string {
-	return ""
+	return "验证码错误"
 }

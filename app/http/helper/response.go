@@ -12,9 +12,9 @@ import "github.com/goravel/framework/contracts/http"
 // RestfulSuccess restful_success is the response of success
 func RestfulSuccess(ctx http.Context, msg string, data any) {
 	ctx.Response().Json(200, http.Json{
-		"Code":    200,
-		"Message": msg,
-		"Data":    data,
+		"code":    200,
+		"message": msg,
+		"data":    data,
 	})
 	return
 }
@@ -22,8 +22,8 @@ func RestfulSuccess(ctx http.Context, msg string, data any) {
 // RestfulError restful_error is the response of error
 func RestfulError(ctx http.Context, msg string) {
 	ctx.Response().Json(200, http.Json{
-		"Code":    0,
-		"Message": msg,
+		"code":    0,
+		"message": msg,
 	})
 	return
 }
@@ -31,8 +31,8 @@ func RestfulError(ctx http.Context, msg string) {
 // UnAuthorized is the response of unauthorized
 func UnAuthorized(ctx http.Context, msg string) {
 	ctx.Response().Json(401, http.Json{
-		"Code":    401,
-		"Message": msg,
+		"code":    401,
+		"message": msg,
 	})
 	return
 }
