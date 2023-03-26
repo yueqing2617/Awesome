@@ -116,6 +116,23 @@ func Manager() {
 				r.Put("/:id", orders.Edit)
 				r.Delete("/", orders.Delete)
 			})
+			// tailor
+			r.Prefix("/tailor").Group(func(r route.Route) {
+				tailors := manager.NewClothTailor()
+				r.Get("/", tailors.Index)
+				r.Post("/", tailors.Create)
+				r.Get("/:id", tailors.Show)
+				r.Put("/:id", tailors.Edit)
+				r.Delete("/", tailors.Delete)
+				r.Prefix("/piece").Group(func(r route.Route) {
+					pieces := manager.NewClothTailorCuttingPiece()
+					r.Get("/", pieces.Index)
+					r.Post("/:id", pieces.Create)
+					r.Get("/:id", pieces.Show)
+					r.Put("/:id", pieces.Edit)
+					r.Delete("/", pieces.Delete)
+				})
+			})
 		})
 		// common
 		r.Prefix("/common").Group(func(r route.Route) {

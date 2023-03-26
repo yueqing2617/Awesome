@@ -33,19 +33,19 @@ type Meta struct {
 }
 
 type PermissionResult struct {
-	ID         uint               `json:"id"`
-	Name       string             `json:"name"`
-	Path       string             `json:"path"`
-	ParentId   uint               `json:"parent_id"`
-	Remark     string             `json:"remark"`
-	Meta       *Meta              `json:"meta"`
-	Redirect   string             `json:"redirect"`
-	Component  string             `json:"component"`
-	Active     string             `json:"active"`
-	Sort       uint               `json:"sort"`
-	Children   []PermissionResult `json:"children"`
-	CreateTime int64              `json:"create_time"`
-	UpdateTime int64              `json:"update_time"`
+	ID        uint               `json:"id"`
+	Name      string             `json:"name"`
+	Path      string             `json:"path"`
+	ParentId  uint               `json:"parent_id"`
+	Remark    string             `json:"remark"`
+	Meta      *Meta              `json:"meta"`
+	Redirect  string             `json:"redirect"`
+	Component string             `json:"component"`
+	Active    string             `json:"active"`
+	Sort      uint               `json:"sort"`
+	Children  []PermissionResult `json:"children"`
+	CreatedAt int64              `json:"created_at"`
+	UpdatedAt int64              `json:"updated_at"`
 }
 
 func (AdminPermission) TableName() string {
@@ -69,17 +69,17 @@ func (p *AdminPermission) GetPermissionList(pid uint) ([]PermissionResult, error
 			}
 		}
 		data = append(data, PermissionResult{
-			ID:         permission.ID,
-			Name:       permission.Name,
-			Path:       permission.Path,
-			ParentId:   permission.ParentId,
-			Remark:     permission.Remark,
-			Meta:       meta,
-			Redirect:   permission.Redirect,
-			Component:  permission.Component,
-			Sort:       permission.Sort,
-			CreateTime: permission.CreatedAt,
-			UpdateTime: permission.UpdatedAt,
+			ID:        permission.ID,
+			Name:      permission.Name,
+			Path:      permission.Path,
+			ParentId:  permission.ParentId,
+			Remark:    permission.Remark,
+			Meta:      meta,
+			Redirect:  permission.Redirect,
+			Component: permission.Component,
+			Sort:      permission.Sort,
+			CreatedAt: permission.CreatedAt,
+			UpdatedAt: permission.UpdatedAt,
 		})
 	}
 	//data := PermissionsToTree(permissions, pid)

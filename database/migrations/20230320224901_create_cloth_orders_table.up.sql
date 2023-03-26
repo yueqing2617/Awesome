@@ -18,6 +18,7 @@ CREATE TABLE cloth_orders (
     total_price decimal(10,2) NOT NULL DEFAULT 0.00 COMMENT '总金额',
     contains json DEFAULT NULL COMMENT '包含',
     procedures json DEFAULT NULL COMMENT '工序',
+    status int(1) NOT NULL DEFAULT 1 COMMENT '状态: 1-未完成, 2-已完成, 3-已关闭',
     remark varchar(255) DEFAULT '' COMMENT '备注',
   created_at bigint(20) NOT NULL DEFAULT 0,
   updated_at bigint(20) NOT NULL DEFAULT 0,

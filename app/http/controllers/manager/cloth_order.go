@@ -1,9 +1,11 @@
 package manager
 
 import (
+	"Awesome/app/events"
 	"Awesome/app/http/helper"
 	"Awesome/app/http/requests"
 	"Awesome/app/models"
+	"github.com/goravel/framework/contracts/event"
 	"github.com/goravel/framework/contracts/http"
 	"github.com/goravel/framework/facades"
 	"strconv"
@@ -112,6 +114,7 @@ func (r *ClothOrder) Create(ctx http.Context) {
 		TotalPrice:          params.TotalPrice,
 		ContainsStr:         helper.ContainsToJSON(&params.Contains),
 		ProceduresStr:       helper.ProceduresToJson(&params.Procedures),
+		Status:              1,
 		Remark:              params.Remark,
 	}
 	if err := facades.Orm.Query().Model(&r.Model).Create(data); err != nil {
@@ -132,6 +135,12 @@ func (r *ClothOrder) Create(ctx http.Context) {
 		helper.RestfulError(ctx, "更新失败："+err.Error())
 		return
 	}
+	_ = facades.Event.Job(&events.OrderCreated{}, []event.Arg{
+		{Type: "string", Value: data.Code},
+		{Type: "string", Value: data.ClothStyleCode},
+		{Type: "uint", Value: data.Total},
+		{Type: "string", Value: "create"},
+	}).Dispatch()
 	helper.RestfulSuccess(ctx, "创建成功", nil)
 }
 func (r *ClothOrder) Show(ctx http.Context) {
@@ -228,6 +237,13 @@ func (r *ClothOrder) Edit(ctx http.Context) {
 		helper.RestfulError(ctx, "更新失败：没有更新任何数据")
 		return
 	}
+	_ = facades.Event.Job(&events.OrderCreated{}, []event.Arg{
+		{Type: "string", Value: data.Code},
+		{Type: "string", Value: data.ClothStyleColors},
+		{Type: "uint", Value: data.Total},
+		{Type: "string", Value: "update"},
+	}).Dispatch()
+
 	helper.RestfulSuccess(ctx, "更新成功", nil)
 }
 

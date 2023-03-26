@@ -28,6 +28,7 @@ type ClothOrder struct {
 	Contains            []ClothOrderContains `gorm:"-"`
 	ProceduresStr       string               `gorm:"column:procedures;type:text;comment:'工序'"`
 	Procedures          []Procedure          `gorm:"-"`
+	Status              int                  `gorm:"column:status;type:tinyint(1);not null;default:0;comment:'状态'"` // 1：未完成 2：已完成 3：已关闭
 	Remark              string               `gorm:"column:remark;type:varchar(255);default:'';comment:'备注'"`
 	orm.SoftDeletes
 }
