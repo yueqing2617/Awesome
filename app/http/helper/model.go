@@ -98,3 +98,18 @@ func RandomString(length int) string {
 	}
 	return "Agpc_" + string(result)
 }
+
+// Count 计算长度,支持[]interface和string
+func Count(val interface{}) int {
+	if val == nil {
+		return 0
+	}
+	value := reflect.ValueOf(val)
+	switch value.Kind() {
+	case reflect.Slice, reflect.Array, reflect.Map:
+		return value.Len()
+	case reflect.String:
+		return len(value.String())
+	}
+	return 0
+}

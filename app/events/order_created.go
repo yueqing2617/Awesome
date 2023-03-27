@@ -15,7 +15,7 @@ func (receiver *OrderCreated) Handle(args []event.Arg) ([]event.Arg, error) {
 	styleCode := args[1].Value.(string)
 	quantity := args[2].Value.(uint)
 	opt := args[3].Value.(string)
-
+	customerName := args[4].Value.(string)
 	switch opt {
 	case "create":
 		var count int64
@@ -27,6 +27,7 @@ func (receiver *OrderCreated) Handle(args []event.Arg) ([]event.Arg, error) {
 				ClothOrderCode: code,
 				ClothStyleCode: styleCode,
 				Total:          quantity,
+				CustomerName:   customerName,
 			}); err != nil {
 				return args, err
 			}
@@ -36,6 +37,7 @@ func (receiver *OrderCreated) Handle(args []event.Arg) ([]event.Arg, error) {
 		res, err := facades.Orm.Query().Model(&models.ClothTailor{}).Where("cloth_order_code", code).Updates(map[string]interface{}{
 			"cloth_style_code": styleCode,
 			"total":            quantity,
+			"customer_name":    customerName,
 		})
 		if err != nil {
 			return args, err

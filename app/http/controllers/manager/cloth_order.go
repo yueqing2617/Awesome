@@ -135,11 +135,17 @@ func (r *ClothOrder) Create(ctx http.Context) {
 		helper.RestfulError(ctx, "更新失败："+err.Error())
 		return
 	}
+	customer := models.BasicCustomer{}
+	if err := facades.Orm.Query().Model(&customer).Where("id", data.CustomerID).First(&customer); err != nil {
+		helper.RestfulError(ctx, "查询失败："+err.Error())
+		return
+	}
 	_ = facades.Event.Job(&events.OrderCreated{}, []event.Arg{
 		{Type: "string", Value: data.Code},
 		{Type: "string", Value: data.ClothStyleCode},
 		{Type: "uint", Value: data.Total},
 		{Type: "string", Value: "create"},
+		{Type: "string", Value: customer.Name},
 	}).Dispatch()
 	helper.RestfulSuccess(ctx, "创建成功", nil)
 }
@@ -237,11 +243,14 @@ func (r *ClothOrder) Edit(ctx http.Context) {
 		helper.RestfulError(ctx, "更新失败：没有更新任何数据")
 		return
 	}
+	customer := models.BasicCustomer{}
+	facades.Orm.Query().Model(&customer).Where("id", data.CustomerID).First(&customer)
 	_ = facades.Event.Job(&events.OrderCreated{}, []event.Arg{
 		{Type: "string", Value: data.Code},
 		{Type: "string", Value: data.ClothStyleColors},
 		{Type: "uint", Value: data.Total},
 		{Type: "string", Value: "update"},
+		{Type: "string", Value: data.ClothStyleName},
 	}).Dispatch()
 
 	helper.RestfulSuccess(ctx, "更新成功", nil)

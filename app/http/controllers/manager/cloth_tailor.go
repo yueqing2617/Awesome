@@ -49,13 +49,65 @@ func (r *ClothTailor) Index(ctx http.Context) {
 	})
 }
 
-// Create POST /dummy
-func (r *ClothTailor) Create(ctx http.Context) {
-
-}
-
 // Show GET /dummy/{id}
 func (r *ClothTailor) Show(ctx http.Context) {
+	id := ctx.Request().Input("id")
+	if id == "" {
+		helper.RestfulError(ctx, "id:参数错误")
+		return
+	}
+	var model models.ClothTailor
+	if err := facades.Orm.Query().Model(&model).Where("id", id).With("ClothOrder").First(&model); err != nil {
+		helper.RestfulError(ctx, "查询失败："+err.Error())
+		return
+	}
+	var cuttingPieces []models.ClothTailorCuttingPieces
+	if err := facades.Orm.Query().Model(&models.ClothTailorCuttingPieces{}).Where("cloth_tailor_id", id).Find(&cuttingPieces); err != nil {
+		helper.RestfulError(ctx, "查询失败："+err.Error())
+		return
+	}
+	contains := helper.JSONToContains(model.ClothOrder.ContainsStr)
+	type cut struct {
+		Color     string `json:"color"`
+		Size      string `json:"size"`
+		Total     uint   `json:"total"`
+		Cut       uint   `json:"cut"`
+		Completed uint   `json:"completed"`
+	}
+	var cutting []cut
+	for _, v := range contains {
+		var row cut
+		var cut = 0
+		var completed = 0
+		// 统计已切割的条目、总条目
+		for _, c := range cuttingPieces {
+			if c.Color == v.Color && c.Size == v.Size {
+				cut++
+				if c.IsCompleted {
+					completed++
+				}
+			}
+		}
+		row.Color = v.Color
+		row.Size = v.Size
+		row.Total = v.Num
+		row.Cut = uint(cut)
+		row.Completed = uint(completed)
+		cutting = append(cutting, row)
+	}
+	helper.RestfulSuccess(ctx, "查询成功", http.Json{
+		"item": http.Json{
+			"cloth_style_code":    model.ClothStyleCode,
+			"cloth_order_code":    model.ClothOrderCode,
+			"cloth_style_picture": model.ClothOrder.ClothStylePicture,
+			"customer_name":       model.CustomerName,
+			"delivery_date":       model.ClothOrder.DeliveryDate,
+			"order_total":         model.ClothOrder.Total,
+			"cutting":             cutting,
+			"not_cutting":         model.ClothOrder.Total - uint(len(cuttingPieces)),
+			"cutting_count":       len(cuttingPieces),
+		},
+	})
 }
 
 // Edit GET /dummy/{id}/edit

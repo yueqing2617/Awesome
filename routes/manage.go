@@ -120,9 +120,8 @@ func Manager() {
 			r.Prefix("/tailor").Group(func(r route.Route) {
 				tailors := manager.NewClothTailor()
 				r.Get("/", tailors.Index)
-				r.Post("/", tailors.Create)
 				r.Get("/:id", tailors.Show)
-				r.Put("/:id", tailors.Edit)
+				//r.Put("/:id", tailors.Edit)
 				r.Delete("/", tailors.Delete)
 				r.Prefix("/piece").Group(func(r route.Route) {
 					pieces := manager.NewClothTailorCuttingPiece()
