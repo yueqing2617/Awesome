@@ -119,7 +119,8 @@ func (r *ClothTailor) Edit(ctx http.Context) {
 func (r *ClothTailor) Delete(ctx http.Context) {
 	ids := ctx.Request().QueryArray("id")
 	if len(ids) == 0 {
-		helper.RestfulError(ctx, "ids:至少选择一条记录")
+		helper.RestfulError(ctx, "id:至少选择一条记录")
+		return
 	}
 	res, err := facades.Orm.Query().Delete(&r.Model, ids)
 	if err != nil {

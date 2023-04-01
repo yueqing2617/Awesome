@@ -150,7 +150,8 @@ func (r *AdminRole) Edit(ctx http.Context) {
 func (r *AdminRole) Delete(ctx http.Context) {
 	ids := ctx.Request().QueryArray("id")
 	if len(ids) == 0 {
-		helper.RestfulError(ctx, "ids:至少选择一条记录")
+		helper.RestfulError(ctx, "id:至少选择一条记录")
+		return
 	}
 	var roles []models.AdminRole
 	if err := facades.Orm.Query().Model(r.Model).Where("id in (?)", ids).Find(&roles); err != nil {
